@@ -51,11 +51,11 @@
 </style>
 
 <x-app-layout>
-    <x-slot name="header">{{ $quiz->title }}</x-slot>
+    <x-slot name="header"> {{ $quiz->title }} </x-slot>
     <div class="card">
         <div class="card-body">
-            <form id="regForm" action="{{route('quiz.result', $quiz->slug)}}" method="POST">
-  
+            <form id="regForm" action="{{ route('quiz.result', $quiz->slug) }}" method="POST">
+
                 @csrf
                 @foreach ($quiz->questions as $question)
                     <div class="tab">
@@ -64,30 +64,30 @@
                             <img src="{{ asset($question->image) }}" alt="" class="img-responsive" style="width: 60%; border-radius:5px">
                         @endif
                         <div class="form-check ml-3 mt-2">
-                            <input class="form-check-input" type="radio" name="{{ $question->id }}" id="quiz{{ $question->id }}1" value="answer1" required>
+                            <input class="form-check-input" type="radio" name="{{ $question->id }}" id="quiz{{ $question->id }}1" value="answer1">
                             <label class="form-check-label" for="quiz{{ $question->id }}1">
                                 {{ $question->answer1 }}
                             </label>
                         </div>
                         <div class="form-check ml-3">
-                            <input class="form-check-input" type="radio" name="{{ $question->id }}" id="quiz{{ $question->id }}2" value="answer2" required>
+                            <input class="form-check-input" type="radio" name="{{ $question->id }}" id="quiz{{ $question->id }}2" value="answer2">
                             <label class="form-check-label" for="quiz{{ $question->id }}2">
                                 {{ $question->answer2 }}
                             </label>
                         </div>
                         <div class="form-check ml-3">
-                            <input class="form-check-input" type="radio" name="{{ $question->id }}" id="quiz{{ $question->id }}3" value="answer3" required>
+                            <input class="form-check-input" type="radio" name="{{ $question->id }}" id="quiz{{ $question->id }}3" value="answer3">
                             <label class="form-check-label" for="quiz{{ $question->id }}3">
                                 {{ $question->answer3 }}
                             </label>
                         </div>
                         <div class="form-check ml-3">
-                            <input class="form-check-input" type="radio" name="{{ $question->id }}" id="quiz{{ $question->id }}4" value="answer4" required>
+                            <input class="form-check-input" type="radio" name="{{ $question->id }}" id="quiz{{ $question->id }}4" value="answer4">
                             <label class="form-check-label" for="quiz{{ $question->id }}4">
                                 {{ $question->answer4 }}
                             </label>
                         </div>
-                        <hr>
+
                     </div>
                 @endforeach
 
@@ -155,20 +155,35 @@
     }
 
     function validateForm() {
+
         // This function deals with validation of the form fields
         var x, y, i, valid = true;
         x = document.getElementsByClassName("tab");
         y = x[currentTab].getElementsByTagName("input");
         // A loop that checks every input field in the current tab:
+        var arr = [];
         for (i = 0; i < y.length; i++) {
+
+            arr.push(y[i].checked);
             // If a field is empty...
-            if (y[i].value == "") {
-                // add an "invalid" class to the field:
+            // if (y[i].checked == true) {
+            //     break;
+
+            // } else {
+            //     // add an "invalid" class to the field:
+            //     y[i].className += " invalid";
+            //     // and set the current valid status to false:
+            //     valid = false;
+            // }
+        }
+        if (!arr.includes(true)   ) {
+            for (i = 0; i < y.length; i++) {
                 y[i].className += " invalid";
-                // and set the current valid status to false:
                 valid = false;
             }
+
         }
+        console.log(arr)
         // If the valid status is true, mark the step as finished and valid:
         if (valid) {
             document.getElementsByClassName("step")[currentTab].className += " finish";
